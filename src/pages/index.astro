@@ -4,11 +4,29 @@ import Layout from '../layouts/Base.astro';
 ---
 
 <Layout>
-	<div class="container">
-		<h1>Ciel Park</h1>
-		<h5>is a designer & developer creating digital products that drive engagement & growth</h5>
-		<div class="overline flex grow space-between">
-			<h5>Currently @ Northrop Grumman</h5> <h5>Previously @ Viget</h5>
+	<!-- Hero -->
+	<div class="flex items-center h-screen">
+		<!-- Hero Left-->
+		<div class="container flex flex-col gap-2 w-1/2 p-20">
+			<h1>Ciel Park</h1>
+			<h5>is a designer & developer creating digital products that drive engagement & growth</h5>
+			<div class="flex justify-between pt-6 border-t border-black">
+				<h5>Currently @ Northrop Grumman</h5> <h5>Previously @ Viget</h5>
+			</div>
 		</div>
+		<!-- Hero Right -->
+		<div class="container flex flex-col gap-2 w-1/2 h-svh">
+			<img src="/src/assets/hero-tree.jpg" alt="Inkbrush painting of a tree" class="h-full" />
+		</div>
+	</div>
+
+	<!-- Random button -->
+	<button class="uppercase cursor-pointer px-4 py-2 border-2 border-black rounded-full bg-white">Random</button>
+
+	<!-- Projects -->
+	<div class="container flex flex-col gap-2 p-32">
+		<!-- Projects -->
+		<h2>✦ Projects</h2>
+
 	</div>
 </Layout>
