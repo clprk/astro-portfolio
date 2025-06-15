@@ -67,3 +67,6 @@ button {
 .container-custom {
     @apply max-w-6xl mx-auto px-6;
 }
+.container-custom-small {
+    @apply max-w-5xl mx-auto px-6;
+}

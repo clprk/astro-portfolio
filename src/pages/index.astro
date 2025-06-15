@@ -4,12 +4,12 @@ import Hero from '../components/Hero.astro';
 import type { SanityDocument } from "@sanity/client";
 import { sanityClient } from "sanity:client";
 
-const POSTS_QUERY = `*[
-  _type == "post"
+const WORKS_QUERY = `*[
+  _type == "work"
   && defined(slug.current)
 ]|order(publishedAt desc)[0...12]{_id, title, slug, description}`;
 
-const posts = await sanityClient.fetch<SanityDocument[]>(POSTS_QUERY);
+const works = await sanityClient.fetch<SanityDocument[]>(WORKS_QUERY);
 ---
 
 <Layout>
@@ -17,62 +17,43 @@ const posts = await sanityClient.fetch<SanityDocument[]>(POSTS_QUERY);
 	<Hero/>
 
 	<!-- Projects Section -->
-	<section class="py-40 container-custom flex flex-col gap-24">
+	<section class="py-40 container-custom-small flex flex-col gap-28">
 			<h2>✦ Experience</h2>
 			<div class="space-y-16">
 				
 				<!-- Project 1 -->
-				<div class="group">
-					
-				  <div class="relative overflow-hidden mb-6">
-					<img 
-					  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80"
-					  alt="E-commerce Platform Dashboard"
-					  class="w-full h-64 md:h-80 object-cover group-hover:scale-105 transition-transform duration-500"
-					/>
-					<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-					<div class="absolute bottom-6 left-6 right-6">
-					  <h3 class="text-2xl font-bold text-white mb-3">E-Commerce Platform</h3>
-					  <div class="flex flex-wrap gap-2">
-						<span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">React</span>
-						<span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">Node.js</span>
-						<span class="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-medium">PostgreSQL</span>
-						<span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">Stripe</span>
-					  </div>
-					</div>
-				  </div>
-				  <h5 class="text-center">
-					A comprehensive e-commerce platform featuring user authentication, product management, shopping cart functionality, 
-					and secure payment processing.
-				  </h5>
-				</div>
 
 				<!-- Projects -->
-				<div class="group">
+				
 					
-					<div class="container mx-auto min-h-screen max-w-3xl p-8">
-						<ul class="flex flex-col gap-y-4">
-						{posts.map((post) => (
+					<div class="min-h-screen">
+						<ul class="flex flex-col gap-y-8">
+						{works.map((work) => (
 							// Overline
-							<div class="flex justify-between py-4 border-t border-black">
-								<h3>{post.title}</h3> 
+							<div class="flex justify-between pt-4 border-t border-black">
+								<h3>{work.title}</h3> 
 								<h4>UX Design ✦ UX Research ✦ UI Dev</h4>
 							</div>
-							
-								<a href={`/posts/${post.slug.current}`}>
-									<img src={post.image} alt={post.title}/>
+							<div class="max-h-130 overflow-hidden">
+
+								<a href={`/works/${work.slug.current}`}>
+									<img 
+										src='https://cdn.sanity.io/images/rnk0k1nk/production/447fdabe52c5b89d26f0afa7f05a010488cafdfd-201x251.jpg' 
+										alt={work.title}
+										class="w-full h-full object-cover border border-dark hover:scale-105 transition-transform duration-500"
+									/>
 								</a>
-								<h5 class="text-center">{post.description}</h5>
 								
-							
+							</div>
+							<h5 class="text-center">{work.description}</h5>
 							))}
 						</ul>
 					</div>
-				</div>
+				
 
 			  <!-- View All Projects Link -->
 			  <div class="text-center mt-16">
-				<a href="/projects" class="inline-flex items-center bg-gray-900 text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition-colors text-lg font-medium">
+				<a href="/works" class="inline-flex items-center px-8 py-4 rounded-full border border-dark hover:bg-dark hover:text-light-beige transition-colors">
 				  View All Projects
 				  <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
