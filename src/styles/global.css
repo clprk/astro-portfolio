@@ -9,21 +9,22 @@
     font-style: normal;
 }
 
+@theme {
+    --color-dark-green: #4E4F48;
+    --color-beige: #F2EEE4;
+    --color-light-beige: #FCF9F2;
+    --color-dark-beige: #E4E0D4;
+    --color-green: #AEB29D;
+    --color-light-green: #EAEDDE;
+    --color-black: #2B2B28;
+  }
+
 /* GLOBAL STYLES */
 :root {
     --font-helvetica: 'Helvetica', sans-serif;
     --font-roboto-mono: 'Roboto Mono', monospace;
-    
-    /* Colors */
-    --dark-beige: #E4E0D4;
-    --beige: #F2EEE4;
-    --light-beige: #FCF9F2;
-    --white: #FFFFFF;
-    --black: #2B2B28;
-    --dark-green: #4E4F48;
-    --green: #AEB29D;
-    --light-green: #EAEDDE;
 }
+
 
 body {
     font-family: var(--font-helvetica);
@@ -53,8 +54,9 @@ h5 {
 }
 a {
     font-family: var(--font-roboto-mono);
-    font-style: italic;
-    text-decoration: underline;
+} 
+a:hover {
+    @apply text-dark-green;
 }
 button {
     font-family: var(--font-roboto-mono);

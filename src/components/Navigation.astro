@@ -1,0 +1,62 @@
+<!-- Navigation -->
+<section class="absolute top-0 left-0 right-0 z-50">
+  <nav class="px-6 py-2 uppercase">
+    <div class="mx-auto flex h-12 max-w-6xl items-center justify-between">
+      <a href="../" class="text-3xl">✦</a>
+      <!-- Hamburger Menu Button -->
+      <button id="menu-button" class="block px-2 py-1 sm:hidden">
+        <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M4.5 12.0005H19.5M4.5 17.7705H19.5M4.5 6.23047H19.5"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-miterlimit="10"
+          stroke-linecap="round"></path>
+        </svg>
+      </button>
+      <!-- Nav Links -->
+      <div class="flex hidden space-x-4 sm:flex sm:space-x-20">
+        <a href="../" class="flex items-center transition-colors">
+        Work
+        </a>
+        <a href="../about" class="  transition-colors">About</a>
+        <a
+        href="https://drive.google.com/file/d/1aYkbI1Z-brlo3FeWJqVnlnxskvi6ihHu/view?usp=sharing"
+        class="transition-colors">Resume</a
+        >
+      </div>
+    </div>
+  </nav>
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="absolute right-4 top-20 mt-2 flex hidden w-fit flex-col items-end rounded-xl bg-black/80 backdrop-blur-sm sm:hidden">
+    <a href="../" class="px-4 py-2 "><h4>Work</h4></a>
+    <a href="../about" class="px-4 py-2 "><h4>About</h4></a>
+    <a href="https://drive.google.com/file/d/1aYkbI1Z-brlo3FeWJqVnlnxskvi6ihHu/view?usp=sharing" class="px-4 py-2"><h4>Resume</h4></a>
+  </div>
+</section>
+
+<script>
+  // script for displaying mobile menu
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuButton = document.getElementById('menu-button')
+    const mobileMenu = document.getElementById('mobile-menu')
+    const navLinks = document.getElementById('nav-links')
+
+    if (menuButton && mobileMenu) {
+      menuButton.addEventListener('click', () => {
+        if (mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.remove('hidden')
+        } else {
+          mobileMenu.classList.add('hidden')
+        }
+      })
+    }
+  })
+</script>
