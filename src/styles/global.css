@@ -41,7 +41,7 @@ h2 {
     @apply text-xl  uppercase md:text-3xl;
 }
 h3 {
-    @apply uppercase;
+    @apply text-xl uppercase;
     font-family: var(--font-roboto-mono);
 }
 h4 {
