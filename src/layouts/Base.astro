@@ -1,5 +1,6 @@
 ---
 import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
 ---
 <!doctype html>
 <html lang="en">
@@ -11,9 +12,10 @@ import Navigation from '../components/Navigation.astro';
 		<title>Ciel Park - Portfolio</title>
 		<link rel="stylesheet" href="src/styles/global.css" />
 	</head>
-	<body class="black">
+	<body class="bg-beige text-dark">
 		<Navigation/>
 		<slot />
+		<Footer/>
 	</body>
 </html>
 

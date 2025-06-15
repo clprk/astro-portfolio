@@ -1,0 +1,39 @@
+---
+---
+
+<section class="footer relative border-t border-black bg-dark-beige">
+  <div class="container-custom">
+    <div class="absolute inset-0 z-[-1] overflow-hidden">
+    </div>
+    <div class="relative px-6 py-2">
+      <div class="flex flex-col items-center gap-10">
+        <div class="my-20 flex flex-wrap items-center">
+          <h3>
+            <span class="inline">Always open to feedback, questions, and making new friends ✽ </span>
+          </h3>
+        </div>
+        <div
+          class="-mt-6 flex w-full flex-col-reverse justify-between sm:flex-row">
+          <div class="emphasis flex gap-4">
+            <h5>Washington DC</h5>
+            <h5 id="clock"></h5>
+          </div>
+          <a href="mailto:cielcpark@gmail.com" class="hoverable emphasis link"
+            >cielcpark@gmail.com</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  var clockElement = document.getElementById('clock')
+
+  function clock() {
+    if (clockElement) {
+      clockElement.textContent = new Date().toLocaleTimeString()
+    }
+  }
+  setInterval(clock, 1000)
+</script>
