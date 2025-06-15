@@ -3,11 +3,25 @@ import Layout from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import type { SanityDocument } from "@sanity/client";
 import { sanityClient } from "sanity:client";
+import imageUrlBuilder from '@sanity/image-url'
+import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
+
+const builder = imageUrlBuilder(sanityClient)
+
+function urlFor(source: SanityImageSource) {
+  return builder.image(source)
+}
 
 const WORKS_QUERY = `*[
   _type == "work"
   && defined(slug.current)
-]|order(publishedAt desc)[0...12]{_id, title, slug, description}`;
+]|order(publishedAt desc)[0...12]{
+  _id, 
+  title, 
+  slug, 
+  description,
+  image
+}`;
 
 const works = await sanityClient.fetch<SanityDocument[]>(WORKS_QUERY);
 ---
@@ -17,35 +31,39 @@ const works = await sanityClient.fetch<SanityDocument[]>(WORKS_QUERY);
 	<Hero/>
 
 	<!-- Projects Section -->
-	<section class="py-40 container-custom-small flex flex-col gap-28">
+	<section class="py-50 container-custom-small flex flex-col gap-38">
 			<h2>✦ Experience</h2>
-			<div class="space-y-16">
-				
-				<!-- Project 1 -->
 
 				<!-- Projects -->
-				
-					
 					<div class="min-h-screen">
-						<ul class="flex flex-col gap-y-8">
+						<ul class="flex flex-col gap-50">
 						{works.map((work) => (
-							// Overline
-							<div class="flex justify-between pt-4 border-t border-black">
-								<h3>{work.title}</h3> 
-								<h4>UX Design ✦ UX Research ✦ UI Dev</h4>
-							</div>
-							<div class="max-h-130 overflow-hidden">
+							<div class="flex flex-col gap-8">
+								<!-- Overline -->
+								<div class="flex justify-between pt-4 border-t border-black">
+									<h3>{work.title}</h3> 
+									<h4>UX Design ✦ UX Research ✦ UI Dev</h4>
+								</div>
+								<div class="max-h-130 overflow-hidden">
 
-								<a href={`/works/${work.slug.current}`}>
-									<img 
-										src='https://cdn.sanity.io/images/rnk0k1nk/production/447fdabe52c5b89d26f0afa7f05a010488cafdfd-201x251.jpg' 
-										alt={work.title}
-										class="w-full h-full object-cover border border-dark hover:scale-105 transition-transform duration-500"
-									/>
-								</a>
-								
+									<a href={`/works/${work.slug.current}`}>
+										<img 
+											src={urlFor(work.image).width(1200).url()}
+											srcset={`
+											${urlFor(work.image).width(400).url()} 400w,
+											${urlFor(work.image).width(800).url()} 800w,
+											${urlFor(work.image).width(1200).url()} 1200w
+											`}
+											sizes="(max-width: 768px) 400px, (max-width: 1024px) 800px, 1200px"
+											alt={work.title}
+											class="w-full h-full object-cover border border-dark hover:scale-105 transition-transform duration-500"
+										/>
+									</a>
+									
+								</div>
+								<h5 class="text-center">{work.description}</h5>
 							</div>
-							<h5 class="text-center">{work.description}</h5>
+							
 							))}
 						</ul>
 					</div>
@@ -55,9 +73,7 @@ const works = await sanityClient.fetch<SanityDocument[]>(WORKS_QUERY);
 			  <div class="text-center mt-16">
 				<a href="/works" class="inline-flex items-center px-8 py-4 rounded-full border border-dark hover:bg-dark hover:text-light-beige transition-colors">
 				  View All Projects
-				  <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-				  </svg>
 				</a>
 			  </div>
 	</section>
+</Layout>
