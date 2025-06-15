@@ -5,11 +5,11 @@ import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { PortableText } from "astro-portabletext";
 
-const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]`;
-const post = await sanityClient.fetch<SanityDocument>(POST_QUERY, Astro.params);
+const WORK_QUERY = `*[_type == "work" && slug.current == $slug][0]`;
+const work = await sanityClient.fetch<SanityDocument>(WORK_QUERY, Astro.params);
 
 export async function getStaticPaths(): Promise<{ params: { slug: string } }> {
-  const SLUGS_QUERY = `*[_type == "post" && defined(slug.current)]{
+  const SLUGS_QUERY = `*[_type == "work" && defined(slug.current)]{
     "params": {"slug": slug.current}
   }`;
   return await sanityClient.fetch(SLUGS_QUERY, Astro.params);
@@ -20,26 +20,26 @@ const urlFor = (source: SanityImageSource) =>
   projectId && dataset
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
-const postImageUrl = post.image
-  ? urlFor(post.image)?.width(550).height(310).url()
+const workImageUrl = work.image
+  ? urlFor(work.image)?.width(550).height(310).url()
   : null;
 ---
 
 <main class="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4">
-  <a href="/posts" class="hover:underline">&larr; Back to posts</a>
+  <a href="/works" class="hover:underline">&larr; Back to works</a>
   {
-    postImageUrl && (
+    workImageUrl && (
       <img
-        src={postImageUrl}
-        alt={post.title}
+        src={workImageUrl}
+        alt={work.title}
         class="aspect-video rounded-xl"
         width="550"
         height="310"
       />
     )
   }
-  <h1 class="text-4xl font-bold mb-8">{post.title}</h1>
+  <h1 class="text-4xl font-bold mb-8">{work.title}</h1>
   <div class="prose">
-    {Array.isArray(post.body) && <PortableText value={post.body} />}
+    {Array.isArray(work.body) && <PortableText value={work.body} />}
   </div>
 </main>
