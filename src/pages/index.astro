@@ -15,12 +15,17 @@ function urlFor(source: SanityImageSource) {
 const WORKS_QUERY = `*[
   _type == "work"
   && defined(slug.current)
-]|order(publishedAt desc)[0...12]{
+]|order(order asc)[0...12]{
   _id, 
   title, 
   slug, 
   description,
-  image
+  image {
+    ...,
+    hotspot,
+    crop
+  },
+  tags,
 }`;
 
 const works = await sanityClient.fetch<SanityDocument[]>(WORKS_QUERY);
@@ -42,7 +47,12 @@ const works = await sanityClient.fetch<SanityDocument[]>(WORKS_QUERY);
 								<!-- Overline -->
 								<div class="flex justify-between pt-4 border-t border-black">
 									<h3>{work.title}</h3> 
-									<h4>UX Design ✦ UX Research ✦ UI Dev</h4>
+									<h4>
+										{work.tags && work.tags.length > 0 
+											? work.tags.join(' ✦ ')
+											: ''
+										}
+									</h4>
 								</div>
 								<div class="max-h-130 overflow-hidden">
 
@@ -55,8 +65,8 @@ const works = await sanityClient.fetch<SanityDocument[]>(WORKS_QUERY);
 											${urlFor(work.image).width(1200).url()} 1200w
 											`}
 											sizes="(max-width: 768px) 400px, (max-width: 1024px) 800px, 1200px"
-											alt={work.title}
-											class="w-full h-full object-cover border border-dark hover:scale-105 transition-transform duration-500"
+											alt={work.image.alt}
+											class="w-full h-full object-cover border border-dark hover:scale-105 transition-transform duration-450"
 										/>
 									</a>
 									
