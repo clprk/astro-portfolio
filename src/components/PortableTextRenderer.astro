@@ -1,0 +1,50 @@
+---
+import { toHTML } from '@portabletext/to-html'
+import imageUrlBuilder from '@sanity/image-url'
+import { sanityClient } from "sanity:client";
+import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import type { PortableTextHtmlComponents } from '@portabletext/to-html'
+
+const builder = imageUrlBuilder(sanityClient)
+
+function urlFor(source: SanityImageSource) {
+  return builder.image(source)
+}
+
+interface Props {
+  value: any[]
+}
+
+const { value } = Astro.props
+
+const components: Partial<PortableTextHtmlComponents> = {
+  types: {
+    image: ({ value }: { value: any }) => {
+      const imageUrl = urlFor(value).width(800).url()
+      const imageSrcSet = `
+        ${urlFor(value).width(400).url()} 400w,
+        ${urlFor(value).width(800).url()} 800w,
+        ${urlFor(value).width(1200).url()} 1200w
+      `
+      return `
+        <img 
+          src="${imageUrl}"
+          srcset="${imageSrcSet}"
+          sizes="(max-width: 768px) 400px, (max-width: 1024px) 800px, 1200px"
+          alt="${value.alt || ''}"
+          class="w-full h-auto my-6 rounded-lg border border-dark"
+        />
+      `
+    }
+  },
+  block: {
+    h2: ({ children }) => `<h2 class="text-2xl font-bold mt-8 mb-4">${children}</h2>`,
+    h3: ({ children }) => `<h3 class="text-xl font-semibold mt-6 mb-3">${children}</h3>`,
+    normal: ({ children }) => `<p class="mb-4">${children}</p>`,
+  }
+}
+
+const htmlContent = toHTML(value, { components })
+---
+
+<div set:html={htmlContent} />

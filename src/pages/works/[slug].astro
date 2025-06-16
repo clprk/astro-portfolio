@@ -1,9 +1,10 @@
 ---
+import Layout from '../../layouts/Base.astro';
 import type { SanityDocument } from "@sanity/client";
 import { sanityClient } from "sanity:client";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { PortableText } from "astro-portabletext";
+import PortableTextRenderer from '../../components/PortableTextRenderer.astro';
 
 const WORK_QUERY = `*[_type == "work" && slug.current == $slug][0]`;
 const work = await sanityClient.fetch<SanityDocument>(WORK_QUERY, Astro.params);
@@ -25,21 +26,43 @@ const workImageUrl = work.image
   : null;
 ---
 
-<main class="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4">
-  <a href="/works" class="hover:underline">&larr; Back to works</a>
-  {
-    workImageUrl && (
-      <img
-        src={workImageUrl}
-        alt={work.title}
-        class="aspect-video rounded-xl"
-        width="550"
-        height="310"
-      />
-    )
-  }
-  <h1 class="text-4xl font-bold mb-8">{work.title}</h1>
-  <div class="prose">
-    {Array.isArray(work.body) && <PortableText value={work.body} />}
+<Layout>
+  <!-- Hero Section -->
+<section class="bg-dark-beige border-b border-dark">
+  
+  <div class="container-custom min-h-screen flex flex-col gap-8 pt-24">
+    <!-- Overline -->
+    <div class="flex justify-between py-4 border-t border-black">
+      <h3>{work.title}</h3> 
+      <h4>
+        {work.tags && work.tags.length > 0 
+          ? work.tags.join(' ✦ ')
+          : ''
+        }
+      </h4>
+    </div>
+    <!-- Title -->
+    <h1>{work.headline}</h1>
+    <!-- Work Summary -->
+     <div class="flex py-10 gap-10">
+      <div class="w-3/5">
+        <h3 class="pb-4">Summary</h3> 
+        <p>{Array.isArray(work.summary) && <PortableTextRenderer value={work.summary}/>}</p>
+      </div>
+      <div class="w-1/5">
+        <h3 class="pb-4">My Role</h3> 
+        <p>{work.role}</p>
+      </div>
+      <div class="w-1/5">
+        <h3 class="pb-4">Timeline</h3> 
+        <p>{work.timeline}</p>
+      </div>
+     </div>
+      
   </div>
-</main>
+</section>
+  
+  <div class="container-custom-small py-20">
+    {Array.isArray(work.body) && <PortableTextRenderer value={work.body} />}
+  </div>
+</Layout>

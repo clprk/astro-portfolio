@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import type { SanityDocument } from "@sanity/client";
+import { sanityClient } from "sanity:client";
+import imageUrlBuilder from '@sanity/image-url'
+import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
+
+const builder = imageUrlBuilder(sanityClient)
+
+function urlFor(source: SanityImageSource) {
+  return builder.image(source)
+}
+
+interface BodyImageProps {
+  value: {
+    asset: {
+      _ref: string
+    }
+    alt?: string
+  }
+}
+
+export default function BodyImage({ value }: BodyImageProps) {
+  return (
+    
+  )
+}
+---
+
+<img 
+                    src={urlFor(work.image).width(1200).url()}
+                    srcset={`
+                    ${urlFor(work.image).width(400).url()} 400w,
+                    ${urlFor(work.image).width(800).url()} 800w,
+                    ${urlFor(work.image).width(1200).url()} 1200w
+                    `}
+                    sizes="(max-width: 768px) 400px, (max-width: 1024px) 800px, 1200px"
+                    alt={work.image.alt}
+                    class="w-full h-full object-cover border border-dark hover:scale-105 transition-transform duration-450"
+                />
+
+<img
+      src={urlFor(value).width(800).url()}
+      alt={value.alt || ''}
+      className="w-full h-auto my-6 rounded-lg"
+    />
