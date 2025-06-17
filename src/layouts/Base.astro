@@ -13,10 +13,41 @@ import '../styles/global.css';
 		<title>Ciel Park - Portfolio</title>
 		<link rel="stylesheet" href="/src/styles/global.css" />
 	</head>
-	<body class="bg-beige text-dark">
+	<body class="bg-beige text-dark cursor-none">
+		<!-- Custom Cursor -->
+		<div id="custom-cursor" class="fixed top-0 left-0 w-3 h-3 bg-dark rounded-full z-500 transition-transform duration-50"></div>
 		<Navigation/>
 		<slot />
 		<Footer/>
 	</body>
 </html>
+
+<script>
+
+	let scale = 1;
+
+	const cursor = document.getElementById("custom-cursor");
+	document.addEventListener("mousemove", (e) => {
+		if (cursor) {
+			cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) scale(${scale})`;
+		}
+	});
+
+	document.addEventListener("DOMContentLoaded", () => {
+		document.querySelectorAll('a').forEach((link) => {
+			link.classList.add('hover-target');
+		});
+	});
+
+	const hoverTargets = document.querySelectorAll('.hover-target');
+	hoverTargets.forEach(target => {
+		target.addEventListener('mouseenter', () => {
+			scale = 1.5;
+		});
+		target.addEventListener('mouseleave', () => {
+			scale = 1;
+		});
+	});
+
+</script>
 

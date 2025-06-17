@@ -70,3 +70,9 @@ button {
 .container-custom-small {
     @apply max-w-5xl mx-auto px-6;
 }
+.hover-target {
+    @apply cursor-none;
+}
+.hover-target:hover ~ #custom-cursor {
+    transform: scale(2);
+  }

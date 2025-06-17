@@ -45,7 +45,7 @@ const works = await sanityClient.fetch<SanityDocument[]>(WORKS_QUERY);
 						{works.map((work) => (
 							<div class="flex flex-col gap-8">
 								<!-- Overline -->
-								<div class="flex justify-between pt-4 border-t border-black">
+								<div class="flex justify-between pt-4 border-t border-dark">
 									<h3>{work.title}</h3> 
 									<h4>
 										{work.tags && work.tags.length > 0 
@@ -54,7 +54,7 @@ const works = await sanityClient.fetch<SanityDocument[]>(WORKS_QUERY);
 										}
 									</h4>
 								</div>
-								<div class="max-h-130 overflow-hidden">
+								<div class="max-h-130 border border-green overflow-hidden">
 
 									<a href={`/works/${work.slug.current}`}>
 										<img 
@@ -66,7 +66,7 @@ const works = await sanityClient.fetch<SanityDocument[]>(WORKS_QUERY);
 											`}
 											sizes="(max-width: 768px) 400px, (max-width: 1024px) 800px, 1200px"
 											alt={work.image.alt}
-											class="w-full h-full object-cover border border-dark hover:scale-105 transition-transform duration-450"
+											class="w-full h-full object-cover mix-blend-luminosity hover:mix-blend-normal hover:scale-105 transition duration-450"
 										/>
 									</a>
 									
@@ -80,10 +80,12 @@ const works = await sanityClient.fetch<SanityDocument[]>(WORKS_QUERY);
 				
 
 			  <!-- View All Projects Link -->
+			  <!-- 
 			  <div class="text-center mt-16">
 				<a href="/works" class="inline-flex items-center px-8 py-4 rounded-full border border-dark hover:bg-dark hover:text-light-beige transition-colors">
 				  View All Projects
 				</a>
-			  </div>
+			  </div> 
+			  -->
 	</section>
 </Layout>
