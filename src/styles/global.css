@@ -65,8 +65,8 @@ button {
 
 /* CUSTOM CLASSES */
 .container-custom {
-    @apply max-w-7xl mx-auto px-6;
+    @apply max-w-7xl mx-auto px-3 md:px-6;
 }
 .container-custom-small {
-    @apply max-w-5xl mx-auto px-6;
+    @apply max-w-5xl mx-auto px-3 md:px-6;
 }

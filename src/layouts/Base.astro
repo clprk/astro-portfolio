@@ -12,10 +12,30 @@ import '../styles/global.css';
 		<meta name="generator" content={Astro.generator} />
 		<title>Ciel Park - Portfolio</title>
 		<link rel="stylesheet" href="/src/styles/global.css" />
+		<style>
+			.custom-cursor {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 12px;
+				height: 12px;
+				background-color: #333;
+				border-radius: 50%;
+				pointer-events: none; /* Critical: prevents blocking clicks */
+				z-index: 9999;
+				transition: transform 0.15s ease-out;
+				transform: translate(-50%, -50%); /* Center the cursor */
+			}
+			
+			.custom-cursor.hover {
+				transform: translate(-50%, -50%) scale(1.5);
+			}
+
+		</style>
 	</head>
 	<body class="bg-beige text-dark cursor-none">
 		<!-- Custom Cursor -->
-		<div id="custom-cursor" class="fixed top-0 left-0 w-3 h-3 bg-dark rounded-full z-[9999]"></div>
+		<div id="custom-cursor" class="custom-cursor"></div>
 		<!-- Navigation -->
 		<Navigation/>
 		<!-- Body Content -->
@@ -24,7 +44,6 @@ import '../styles/global.css';
 		<Footer/>
 		<script>
 			const cursor = document.getElementById("custom-cursor");
-			let isHovering = false;
 		
 			// Handle mouse movement (position only)
 			document.addEventListener("mousemove", (e) => {
@@ -40,14 +59,22 @@ import '../styles/global.css';
 				target.style.cursor = 'none';
 				target.addEventListener('mouseenter', () => {
 					if (cursor) {
-						cursor.style.transform = 'scale(1.5)';
+						cursor.classList.add('hover');
 					}
 				});
 				target.addEventListener('mouseleave', () => {
 					if (cursor) {
-						cursor.style.transform = 'scale(1)';
+						cursor.classList.remove('hover');
 					}
 				});
+			});
+
+			document.addEventListener('mouseleave', () => {
+				if (cursor) cursor.style.opacity = '0';
+			});
+			
+			document.addEventListener('mouseenter', () => {
+				if (cursor) cursor.style.opacity = '1';
 			});
 		</script>
 	</body>
