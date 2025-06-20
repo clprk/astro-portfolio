@@ -1,13 +1,31 @@
 ---
 import Layout from '../layouts/Base.astro';
+import { sanityClient } from "sanity:client";
+
+// Define the type for experience
+interface Experience {
+  company: string;
+  role: string;
+  dates: string;
+  description?: string;
+}
+
+const experiences: Experience[] = await sanityClient.fetch(`
+  *[_type == "experience"] | order(order asc) {
+    company,
+    role,
+    dates,
+    description
+  }
+`)
 ---
 
 <Layout>
 
 	<!-- Hero Section -->
     <section class="bg-dark-beige border-b border-dark">
-        <div class="container-custom min-h-screen flex pt-10">
-            <div class="w-1/2 flex flex-col gap-4 flex flex-col justify-center">
+        <div class="container-custom min-h-screen flex flex-col md:flex-row pt-20 pb-16 gap-10 md:pt-10">
+            <div class="md:w-1/2 flex flex-col gap-4 flex flex-col justify-center">
                 <!-- Left Side - Intro -->
                 <h1>Hello</h1>
                 <p> I’m Ciel, a 2024 graduate from the University of Virginia, where I studied a blend of computer science, psychology, and design.</p>
@@ -18,18 +36,28 @@ import Layout from '../layouts/Base.astro';
             
             
             <!-- Right Side - Image -->
-            <div class="w-1/2 overflow-hidden flex justify-end items-center"> 
+            <div class="md:w-1/2 overflow-hidden flex justify-end items-end"> 
                 <img src="https://cdn.sanity.io/images/rnk0k1nk/production/bb4fbceeb5d300985534664bdb5f096c445bb149-857x1284.jpg" alt="Photo of Ciel Park" class="h-140 object-cover border border-dark" />
             </div>
         </div>
     </section>
 
 	<!-- Projects Section -->
-	<section class="py-50 container-custom-small flex flex-col gap-38">
+	<section class="py-24 md:py-50 container-custom-small flex flex-col gap-8 md:gap-24">
 			<h2>✦ Experience</h2>
-            <div class="flex justify-between pt-4 border-t border-black">
-                <h3>Whatever</h3> 
-                <h4>UX Design ✦ UX Research ✦ UI Dev</h4>
+            <div class="flex flex-col gap-10">
+                {experiences.map((experience) => (
+                    <div class="flex flex-col md:flex-row justify-between pt-4 border-t border-black gap-4">
+                        <div class="flex flex-col gap-4">
+                            <h3>{experience.company}</h3> 
+                            <h5>{experience.role}</h5> 
+                            {experience.description && (
+                                <p class="text-sm text-gray-600">{experience.description}</p>
+                            )}
+                        </div>
+                        <h4>{experience.dates}</h4>
+                    </div>
+                ))}
             </div>
 	</section>
 </Layout>

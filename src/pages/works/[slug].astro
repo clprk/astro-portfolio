@@ -32,7 +32,7 @@ const workImageUrl = work.image
   
   <div class="container-custom min-h-screen flex flex-col gap-8 pt-24">
     <!-- Overline -->
-    <div class="flex justify-between py-4 border-t border-black">
+    <div class="flex flex-col md:flex-row justify-between py-4 border-t border-black gap-2">
       <h3>{work.title}</h3> 
       <h4>
         {work.tags && work.tags.length > 0 
@@ -44,16 +44,16 @@ const workImageUrl = work.image
     <!-- Title -->
     <h1>{work.headline}</h1>
     <!-- Work Summary -->
-     <div class="flex py-10 gap-10">
-      <div class="w-3/5">
+     <div class="flex flex-col md:flex-row py-10 gap-10">
+      <div class="md:w-3/5">
         <h3 class="pb-4">Summary</h3> 
         <p>{Array.isArray(work.summary) && <PortableTextRenderer value={work.summary}/>}</p>
       </div>
-      <div class="w-1/5">
+      <div class="md:w-1/5">
         <h3 class="pb-4">My Role</h3> 
         <p>{work.role}</p>
       </div>
-      <div class="w-1/5">
+      <div class="md:w-1/5">
         <h3 class="pb-4">Timeline</h3> 
         <p>{work.timeline}</p>
       </div>
