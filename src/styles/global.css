@@ -41,11 +41,11 @@ h2 {
     @apply text-xl  uppercase md:text-3xl;
 }
 h3 {
-    @apply text-xl uppercase;
+    @apply text-xl uppercase mb-6;
     font-family: var(--font-roboto-mono);
 }
 h4 {
-    @apply uppercase;
+    @apply uppercase mb-4;
     font-family: var(--font-roboto-mono);
     font-style: italic;
 }

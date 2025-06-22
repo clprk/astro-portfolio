@@ -6,10 +6,36 @@ import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import PortableTextRenderer from '../../components/PortableTextRenderer.astro';
 
-const WORK_QUERY = `*[_type == "work" && slug.current == $slug][0]`;
+
+const WORK_QUERY = `*[_type == "work" && slug.current == $slug][0]{
+  ...,
+  body[] {
+    _type,
+    _type == "imageBlock" => {
+      heading,
+      image,
+      subtitle
+    },
+    _type == "textBlock" => {
+      heading,
+      content
+    },
+    _type == "gridBlock" => {
+      heading,
+      columns,
+      items[] {
+        type,
+        content,
+        image,
+        subtitle,
+        caption
+      }
+    }
+  }
+}`;
 const work = await sanityClient.fetch<SanityDocument>(WORK_QUERY, Astro.params);
 
-export async function getStaticPaths(): Promise<{ params: { slug: string } }> {
+export async function getStaticPaths(): Promise<Array<{ params: { slug: string } }>> {
   const SLUGS_QUERY = `*[_type == "work" && defined(slug.current)]{
     "params": {"slug": slug.current}
   }`;
@@ -46,22 +72,120 @@ const workImageUrl = work.image
     <!-- Work Summary -->
      <div class="flex flex-col md:flex-row py-10 gap-10">
       <div class="md:w-3/5">
-        <h3 class="pb-4">Summary</h3> 
+        <h3>Summary</h3> 
         <p>{Array.isArray(work.summary) && <PortableTextRenderer value={work.summary}/>}</p>
       </div>
       <div class="md:w-1/5">
-        <h3 class="pb-4">My Role</h3> 
+        <h3>My Role</h3> 
         <p>{work.role}</p>
       </div>
       <div class="md:w-1/5">
-        <h3 class="pb-4">Timeline</h3> 
+        <h3>Timeline</h3> 
         <p>{work.timeline}</p>
       </div>
      </div>
       
   </div>
 </section>
-  
+<section>
+  <!-- Body Content -->
+  <div class="container-custom-small py-30 flex flex-col gap-20">
+    {work.body && work.body.map((block: any, index: number) => {
+      // Image Blocks
+      if (block._type === 'imageBlock') {
+        const imageUrl = block.image ? urlFor(block.image)?.width(800).url() : null;
+        return (
+          <div>
+            {block.heading && (
+              <h3 class="pb-4">{block.heading}</h3>
+            )}
+            {imageUrl && (
+              <figure>
+                <img 
+                  src={imageUrl} 
+                  alt={block.image?.alt || ''} 
+                  class="w-full rounded-lg shadow-lg"
+                />
+                {block.caption && (
+                  <h5 class="text-center">
+                    {block.caption}
+                  </h5>
+                )}
+              </figure>
+            )}
+          </div>
+        );
+      } 
+      // Text Blocks
+      else if (block._type === 'textBlock') {
+        return (
+          <div class="flex gap-20">
+            {block.heading && (
+              <h3 class="w-1/5">{block.heading}</h3>
+            )}
+            {block.content && (
+              <div class="w-4/5">
+                <PortableTextRenderer value={block.content} />
+              </div>
+            )}
+          </div>
+        );
+      }
+      // Grid Blocks
+      else if (block._type === 'gridBlock') {
+        const gridClasses = {
+          '2': 'grid-cols-1 md:grid-cols-2',
+          '3': 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+          '4': 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'
+        };
+        
+        return (
+          <div>
+            {block.heading && (
+              <h3 class="pb-4">{block.heading}</h3>
+            )}
+            <div class={`grid ${gridClasses[block.columns as keyof typeof gridClasses]} gap-6`}>
+              {block.items && block.items.map((item: any, itemIndex: number) => (
+                <div class="grid-item">
+                  {item.type === 'image' && item.image && (
+                    <div>
+                      {item.subtitle && (
+                        <h4 class="mb-4">{item.subtitle}</h4>
+                      )}
+                      <img 
+                        src={urlFor(item.image)?.width(400).url() || ''} 
+                        alt={item.image.alt || ''} 
+                        class="w-full h-auto rounded-lg"
+                      />
+                      {item.caption && (
+                        <h5 class="text-center mt-2 italic">{item.caption}</h5>
+                      )}
+                    </div>
+                  )}
+                  {item.type === 'text' && item.content && (
+                    <div>
+                      {item.subtitle && (
+                        <h4 class="mb-4">{item.subtitle}</h4>
+                      )}
+                      <div class="prose prose-sm max-w-none">
+                        <PortableTextRenderer value={item.content} />
+                      </div>
+                      {item.caption && (
+                        <h5 class="text-center mt-2 italic">{item.caption}</h5>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+      return null;
+    })}
+  </div>
+
+</section>
   <div class="container-custom-small py-20">
     {Array.isArray(work.body) && <PortableTextRenderer value={work.body} />}
   </div>
