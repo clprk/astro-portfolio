@@ -14,7 +14,7 @@ const WORK_QUERY = `*[_type == "work" && slug.current == $slug][0]{
     _type == "imageBlock" => {
       heading,
       image,
-      subtitle
+      caption
     },
     _type == "textBlock" => {
       heading,
@@ -107,7 +107,7 @@ const workImageUrl = work.image
                   class="w-full rounded-lg shadow-lg"
                 />
                 {block.caption && (
-                  <h5 class="text-center">
+                  <h5 class="text-center mt-4 italic">
                     {block.caption}
                   </h5>
                 )}
@@ -171,7 +171,7 @@ const workImageUrl = work.image
                         <PortableTextRenderer value={item.content} />
                       </div>
                       {item.caption && (
-                        <h5 class="text-center mt-2 italic">{item.caption}</h5>
+                        <h5 class="text-center mt-4 italic">{item.caption}</h5>
                       )}
                     </div>
                   )}
