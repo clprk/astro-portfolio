@@ -108,7 +108,7 @@ const workImageUrl = work.image
                   <img 
                     src={imageUrl} 
                     alt={block.image?.alt || ''} 
-                    class="w-full rounded-lg shadow-lg"
+                    class="w-full"
                   />
                   {block.caption && (
                     <h5 class="text-center mt-4 italic">
@@ -125,12 +125,12 @@ const workImageUrl = work.image
       else if (block._type === 'textBlock') {
         return (
           <div class={block.dark ? 'bg-dark text-light-beige py-30' : 'py-30'}>
-            <div class="container-custom-small flex gap-20">
+            <div class="container-custom-small flex gap-16">
               {block.heading && (
-                <h3 class="w-1/5">{block.heading}</h3>
+                <h3 class="w-2/7">{block.heading}</h3>
               )}
               {block.content && (
-                <div class="w-4/5">
+                <div class="w-5/7">
                   <PortableTextRenderer value={block.content} />
                 </div>
               )}
@@ -163,7 +163,7 @@ const workImageUrl = work.image
                         <img 
                           src={urlFor(item.image)?.width(400).url() || ''} 
                           alt={item.image.alt || ''} 
-                          class="w-full h-auto rounded-lg"
+                          class="w-full h-auto"
                         />
                         {item.caption && (
                           <h5 class="text-center mt-2 italic">{item.caption}</h5>

@@ -62,6 +62,9 @@ button {
     font-family: var(--font-roboto-mono);
     text-transform: uppercase;
 }
+img {
+    @apply z-10 relative;
+  }
 
 /* CUSTOM CLASSES */
 .container-custom {
