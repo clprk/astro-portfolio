@@ -14,11 +14,13 @@ const WORK_QUERY = `*[_type == "work" && slug.current == $slug][0]{
     _type == "imageBlock" => {
       heading,
       image,
-      caption
+      caption,
+      dark
     },
     _type == "textBlock" => {
       heading,
-      content
+      content,
+      dark
     },
     _type == "gridBlock" => {
       heading,
@@ -29,7 +31,8 @@ const WORK_QUERY = `*[_type == "work" && slug.current == $slug][0]{
         image,
         subtitle,
         caption
-      }
+      },
+      dark
     }
   }
 }`;
@@ -58,7 +61,7 @@ const workImageUrl = work.image
   
   <div class="container-custom min-h-screen flex flex-col gap-8 pt-24">
     <!-- Overline -->
-    <div class="flex flex-col md:flex-row justify-between py-4 border-t border-black gap-2">
+    <div class="flex flex-col md:flex-row justify-between py-4 border-t border-dark gap-2">
       <h3>{work.title}</h3> 
       <h4>
         {work.tags && work.tags.length > 0 
@@ -89,45 +92,49 @@ const workImageUrl = work.image
 </section>
 <section>
   <!-- Body Content -->
-  <div class="container-custom-small py-30 flex flex-col gap-20">
+  <div class="flex flex-col gap-20">
     {work.body && work.body.map((block: any, index: number) => {
       // Image Blocks
       if (block._type === 'imageBlock') {
         const imageUrl = block.image ? urlFor(block.image)?.width(800).url() : null;
         return (
-          <div>
-            {block.heading && (
-              <h3 class="pb-4">{block.heading}</h3>
-            )}
-            {imageUrl && (
-              <figure>
-                <img 
-                  src={imageUrl} 
-                  alt={block.image?.alt || ''} 
-                  class="w-full rounded-lg shadow-lg"
-                />
-                {block.caption && (
-                  <h5 class="text-center mt-4 italic">
-                    {block.caption}
-                  </h5>
-                )}
-              </figure>
-            )}
+          <div class={block.dark ? 'bg-dark text-light-beige py-30' : 'py-30'}>
+            <div class="container-custom-small">
+              {block.heading && (
+                <h3 class="pb-4">{block.heading}</h3>
+              )}
+              {imageUrl && (
+                <figure>
+                  <img 
+                    src={imageUrl} 
+                    alt={block.image?.alt || ''} 
+                    class="w-full rounded-lg shadow-lg"
+                  />
+                  {block.caption && (
+                    <h5 class="text-center mt-4 italic">
+                      {block.caption}
+                    </h5>
+                  )}
+                </figure>
+              )}
+            </div>
           </div>
         );
       } 
       // Text Blocks
       else if (block._type === 'textBlock') {
         return (
-          <div class="flex gap-20">
-            {block.heading && (
-              <h3 class="w-1/5">{block.heading}</h3>
-            )}
-            {block.content && (
-              <div class="w-4/5">
-                <PortableTextRenderer value={block.content} />
-              </div>
-            )}
+          <div class={block.dark ? 'bg-dark text-light-beige py-30' : 'py-30'}>
+            <div class="container-custom-small flex gap-20">
+              {block.heading && (
+                <h3 class="w-1/5">{block.heading}</h3>
+              )}
+              {block.content && (
+                <div class="w-4/5">
+                  <PortableTextRenderer value={block.content} />
+                </div>
+              )}
+            </div>
           </div>
         );
       }
@@ -140,43 +147,45 @@ const workImageUrl = work.image
         };
         
         return (
-          <div>
-            {block.heading && (
-              <h3 class="pb-4">{block.heading}</h3>
-            )}
-            <div class={`grid ${gridClasses[block.columns as keyof typeof gridClasses]} gap-6`}>
-              {block.items && block.items.map((item: any, itemIndex: number) => (
-                <div class="grid-item">
-                  {item.type === 'image' && item.image && (
-                    <div>
-                      {item.subtitle && (
-                        <h4 class="mb-4">{item.subtitle}</h4>
-                      )}
-                      <img 
-                        src={urlFor(item.image)?.width(400).url() || ''} 
-                        alt={item.image.alt || ''} 
-                        class="w-full h-auto rounded-lg"
-                      />
-                      {item.caption && (
-                        <h5 class="text-center mt-2 italic">{item.caption}</h5>
-                      )}
-                    </div>
-                  )}
-                  {item.type === 'text' && item.content && (
-                    <div>
-                      {item.subtitle && (
-                        <h4 class="mb-4">{item.subtitle}</h4>
-                      )}
-                      <div class="prose prose-sm max-w-none">
-                        <PortableTextRenderer value={item.content} />
+          <div class={block.dark ? 'bg-dark text-light-beige py-30' : 'py-30'}>
+            <div class="container-custom-small">
+              {block.heading && (
+                <h3 class="pb-4">{block.heading}</h3>
+              )}
+              <div class={`grid ${gridClasses[block.columns as keyof typeof gridClasses]} gap-6`}>
+                {block.items && block.items.map((item: any, itemIndex: number) => (
+                  <div class="grid-item">
+                    {item.type === 'image' && item.image && (
+                      <div>
+                        {item.subtitle && (
+                          <h4 class="mb-4">{item.subtitle}</h4>
+                        )}
+                        <img 
+                          src={urlFor(item.image)?.width(400).url() || ''} 
+                          alt={item.image.alt || ''} 
+                          class="w-full h-auto rounded-lg"
+                        />
+                        {item.caption && (
+                          <h5 class="text-center mt-2 italic">{item.caption}</h5>
+                        )}
                       </div>
-                      {item.caption && (
-                        <h5 class="text-center mt-4 italic">{item.caption}</h5>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
+                    )}
+                    {item.type === 'text' && item.content && (
+                      <div>
+                        {item.subtitle && (
+                          <h4 class="mb-4">{item.subtitle}</h4>
+                        )}
+                        <div class="prose prose-sm max-w-none">
+                          <PortableTextRenderer value={item.content} />
+                        </div>
+                        {item.caption && (
+                          <h5 class="text-center mt-4 italic">{item.caption}</h5>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         );
