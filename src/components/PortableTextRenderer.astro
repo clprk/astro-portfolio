@@ -38,16 +38,36 @@ const components: Partial<PortableTextHtmlComponents> = {
     }
   },
   block: {
-    h1: ({ children }) => `<h3 class="text-xl font-semibold mt-6 mb-3">${children}</h3>`,
-    h2: ({ children }) => `<h4 class="text-lg font-medium mt-5 mb-2">${children}</h4>`,
-    h3: ({ children }) => `<h5 class="text-base font-medium mt-4 mb-2">${children}</h5>`,
-    normal: ({ children }) => `<p class="mb-4">${children}</p>`,
+    h1: ({ children }) => `<h3>${children}</h3>`,
+    h2: ({ children }) => `<h4>${children}</h4>`,
+    h3: ({ children }) => `<h5>${children}</h5>`,
+    normal: ({ children, value }) => {
+      // Check if this is an empty block (line break)
+      const isEmpty = value.children?.every((child: any) => 
+        !child.text || child.text.trim() === ''
+      )
+      
+      if (isEmpty) {
+        return '<br>' // Convert empty blocks to line breaks
+      }
+      
+      return `<p class="mb-4">${children}</p>`
+    },
+  },
+  list: {
+    bullet: ({ children }) => `<ul class="list-disc list-inside">${children}</ul>`,
+    number: ({ children }) => `<ol class="list-decimal list-inside">${children}</ol>`,
+  },
+  listItem: {
+    bullet: ({ children }) => `<li class="mb-6">${children}</li>`,
+    number: ({ children }) => `<li class="mb-6">${children}</li>`,
   },
   marks: {
     strong: ({ children }) => `<strong class="font-semibold">${children}</strong>`,
     em: ({ children }) => `<em class="italic">${children}</em>`,
     code: ({ children }) => `<code class="bg-gray-100 px-2 py-1 rounded text-sm font-mono">${children}</code>`,
-  }
+    underline: ({ children }) => `<span class="underline">${children}</span>`,
+  },
 }
 
 const htmlContent = toHTML(value, { components })
