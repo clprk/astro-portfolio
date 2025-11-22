@@ -1,0 +1,64 @@
+<!-- Custom cursor styles - commented out for future use
+		<style is:global>
+			.custom-cursor {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 12px;
+				height: 12px;
+				background-color: #333;
+				border-radius: 50%;
+				pointer-events: none; /* Critical: prevents blocking clicks */
+				z-index: 9999;
+				transition: transform 0.15s ease-out;
+				transform: translate(-50%, -50%); /* Center the cursor */
+			}
+			
+			.custom-cursor.hover {
+				transform: translate(-50%, -50%) scale(1.5);
+			}
+
+		</style>
+		-->
+
+<!-- <div id="custom-cursor" class="custom-cursor hidden md:block"></div> -->
+
+<script>
+
+	   		// Custom cursor JavaScript - commented out for future use
+			/* 
+			const cursor = document.getElementById("custom-cursor");
+		
+			// Handle mouse movement (position only)
+			document.addEventListener("mousemove", (e) => {
+				if (cursor) {
+					cursor.style.left = `${e.clientX}px`;
+					cursor.style.top = `${e.clientY}px`;
+				}
+			});
+			
+		
+			const links = document.querySelectorAll("a");
+			links.forEach(target => {
+				target.style.cursor = 'none';
+				target.addEventListener('mouseenter', () => {
+					if (cursor) {
+						cursor.classList.add('hover');
+					}
+				});
+				target.addEventListener('mouseleave', () => {
+					if (cursor) {
+						cursor.classList.remove('hover');
+					}
+				});
+			});
+
+			document.addEventListener('mouseleave', () => {
+				if (cursor) cursor.style.opacity = '0';
+			});
+			
+			document.addEventListener('mouseenter', () => {
+				if (cursor) cursor.style.opacity = '1';
+			}); */
+
+		</script>

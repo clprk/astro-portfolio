@@ -73,10 +73,3 @@ img {
 .container-custom-small {
     @apply max-w-5xl mx-auto px-3 md:px-12;
 }
-
-/* Page load animation styles */
-.intro-animation-fade-out {
-    opacity: 0;
-    transition: opacity 1.0s ease-out;
-    pointer-events: none;
-}
