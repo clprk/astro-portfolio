@@ -40,14 +40,76 @@ import '../styles/global.css';
 	<body class="bg-beige text-dark relative">
 		<!-- Custom Cursor - commented out for future use -->
 		<!-- <div id="custom-cursor" class="custom-cursor hidden md:block"></div> -->
+
+		 <!-- Page load animation -->
+		 <div
+		 id="intro-animation"
+		 class="fixed inset-0 flex items-center justify-center bg-light-beige z-50">
+		 <div class="animate-spin">
+		   <svg class="w-16 h-16"
+			 viewBox="0 0 32 32"
+			 fill="none"
+			 xmlns="http://www.w3.org/2000/svg">
+				<path d="M13.1041 27.6487C12.8401 26.0887 12.1441 24.4087 11.0161 22.6087C9.88806 20.7847 8.28006 19.0927 6.19206 17.5327C4.12806 15.9727 2.06406 14.9767 6.25998e-05 14.5447V13.0327C2.04006 12.5527 3.99606 11.6647 5.86806 10.3687C7.76406 9.04872 9.34806 7.46472 10.6201 5.61672C11.9161 3.72072 12.7441 1.84872 13.1041 0.000718355H14.6161C14.8321 1.20072 15.2641 2.43672 15.9121 3.70872C16.5601 4.95672 17.3881 6.15672 18.3961 7.30872C19.4281 8.43672 20.5801 9.45672 21.8521 10.3687C23.7481 11.7127 25.6801 12.6007 27.6481 13.0327V14.5447C26.3281 14.8087 24.9601 15.3487 23.5441 16.1647C22.1521 16.9807 20.8561 17.9527 19.6561 19.0807C18.4561 20.1847 17.4721 21.3487 16.7041 22.5727C15.5761 24.3727 14.8801 26.0647 14.6161 27.6487H13.1041Z" 
+				fill="#262627"/>
+			</svg>
+
+		 </div>
+	   </div>
+
 		<!-- Navigation -->
 		<Navigation/>
+
 		<!-- Body Content -->
 		<slot />
+
 		<!-- Footer -->
 		<Footer/>
-		<!-- Custom cursor JavaScript - commented out for future use
+
 		<script>
+
+			// Page load animation script
+			document.addEventListener("DOMContentLoaded", () => {
+			const introAnimation = document.getElementById("intro-animation");
+			if (introAnimation) {
+				// Get all images on the page
+				const images = document.querySelectorAll('img');
+				let loadedImages = 0;
+				const totalImages = images.length;
+				
+				// If no images, remove animation immediately
+				if (totalImages === 0) {
+					introAnimation.classList.add("intro-animation-fade-out");
+					setTimeout(() => introAnimation.remove(), 1000);
+					return;
+				}
+				
+				// Function to check if all images are loaded
+				const checkAllImagesLoaded = () => {
+					loadedImages++;
+					if (loadedImages === totalImages) {
+						// All images loaded, start fade out
+						introAnimation.classList.add("intro-animation-fade-out");
+						setTimeout(() => introAnimation.remove(), 1000);
+					}
+				};
+				
+				// Add load event listeners to all images
+				images.forEach(img => {
+					if (img.complete) {
+						// Image already loaded
+						checkAllImagesLoaded();
+					} else {
+						// Image still loading
+						img.addEventListener('load', checkAllImagesLoaded);
+						img.addEventListener('error', checkAllImagesLoaded); // Handle errors too
+					}
+				});
+			}
+			});
+
+	   		// Custom cursor JavaScript - commented out for future use
+			/* 
 			const cursor = document.getElementById("custom-cursor");
 		
 			// Handle mouse movement (position only)
@@ -80,9 +142,9 @@ import '../styles/global.css';
 			
 			document.addEventListener('mouseenter', () => {
 				if (cursor) cursor.style.opacity = '1';
-			});
+			}); */
+
 		</script>
-		-->
 	</body>
 	<Texture/>
 </html>
